@@ -1,0 +1,161 @@
+
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>Git Submodules</h1>
+				<!-- <h3>The HTML Presentation Framework</h3> -->
+				<p>
+					<small>Created by Doron Mor</small>
+				</p>
+			</section>
+
+
+			<section>
+				<h2>When to use it?</h2>
+				<p>
+					When you want to share code that you also need change along with the consumer of that code.<br>While keeping their
+					history separate but synchronized.
+				</p>
+			</section>
+
+
+			<section>
+				<h2>Why should we use it?</h2>
+				<ul>
+					<li>Prevents code duplications.</li>
+					<li>Track submodule on commit.</li>
+					<li>One place to code.</li>
+				</ul>
+			</section>
+
+
+			<section>
+				<h2>Add a submodule</h2>
+				<pre><code class="shell" data-trim contenteditable style="font-size: 18px;">
+# layout: git submodule add LINK NAME
+
+git submodule add https://github.com/necolas/normalize.css.git normalize
+				</code></pre>
+			</section>
+
+
+			<section>
+				<h2>Remove a submodule</h2>
+				<pre><code class="shell" data-trim contenteditable style="font-size: 18px;">
+# layout:
+# git submodule deinit -f NAME
+# rm -rf .git/modules/NAME
+# git rm -f NAME
+
+git submodule deinit -f normalize
+rm -rf .git/modules/normalize
+git rm -f normalize
+				</code></pre>
+			</section>
+
+
+			<section>
+				<h2>Clone with submodules</h2>
+				<pre><code class="shell" data-trim contenteditable style="font-size: 18px;">
+# layout 1:
+# git clone LINK
+# git submodule init
+# git submodule update
+git clone https://github.com/PrinceNet/Git-Submodules-Main-Project-Example.git
+git submodule init
+git submodule update
+
+# layout 2 (simpler): 
+# git clone --recurse-submodules LINK
+git clone --recurse-submodules https://github.com/PrinceNet/Git-Submodules-Main-Project-Example.git
+				</code></pre>
+			</section>
+
+
+			<section>
+				<h2>Push</h2>
+				<p>
+					- Part 1 - <br>
+					Here it's gets tricky... <br>
+					In order to update your main project, you must first go to each and every one of your submodules using 'cd'
+					command, commit the changes and push like it was a seperate repo and then go back to main project and push. Thats
+					means that foreach for N submodules we'll have (N+1) pushes to make.
+				</p>
+			</section>
+
+			<section>
+				<h2>Push</h2>
+				<p>
+					- Part 2 - <br>
+					This is how it looks like for 1 submodule called child <br>
+				</p>
+				<pre><code class="shell" data-trim contenteditable style="font-size: 18px;">
+# add all files, commit & push in child:
+cd child
+git add .
+git commit -m "comment"
+git push origin master
+
+# add all files, commit & push in parent:
+cd ..
+git add .
+git commit -m "comment"
+git push origin master
+					</code></pre>
+			</section>
+
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			history: true,
+			center: true,
+
+			transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>
